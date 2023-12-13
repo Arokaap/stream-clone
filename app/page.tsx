@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/button'
+import { UserButton } from '@clerk/nextjs'
 import React from 'react'
 
 export default function Home (): JSX.Element {
   return (
-    <Button size="lg">
-      Click me
-    </Button>
+    <div className='flex flex-col gap-y-4'>
+      <h1>Dashboard</h1>
+      <UserButton afterSignOutUrl='/'/>
+    </div>
   )
 }
