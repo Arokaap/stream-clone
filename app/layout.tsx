@@ -21,7 +21,7 @@ export default function RootLayout ({
 }): JSX.Element {
   return (
     <ClerkProvider appearance={{ baseTheme: dark }}>
-      <html lang="en">
+      <html lang="es">
           <body className={inter.className}>
             <ThemeProvider
               attribute='class'
