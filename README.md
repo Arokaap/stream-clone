@@ -50,3 +50,5 @@ Dive into the new era of streaming with StreamClone! 🌟🚀
 👉 [Visit our website](#) | 👉 [Follow us on Twitter](#) | 👉 [Join our community](#)
 
 **StreamClone - Where Every Stream Counts.** 🌟🚀
+
+Node version supported: v20.10.0
