@@ -1,6 +1,43 @@
 import { db } from '@/lib/db'
 import { getSelf } from '@/lib/auth-service'
 
+export const getFollowedUsers = async (): Promise<
+Array<{
+  following: {
+    id: string
+    username: string
+    imageUrl: string
+    externalUserId: string
+    bio: string | null
+    createdAt: Date
+    updateAt: Date
+  }
+} & {
+  id: string
+  followerId: string
+  followingId: string
+  createdAt: Date
+  updateAt: Date
+}>
+> => {
+  try {
+    const self = await getSelf()
+
+    const followedUsers = await db.follow.findMany({
+      where: {
+        followerId: self.id
+      },
+      include: {
+        following: true
+      }
+    })
+
+    return followedUsers
+  } catch (error) {
+    return []
+  }
+}
+
 export const isFollowingUser = async (id: string): Promise<boolean> => {
   try {
     const self = await getSelf()
@@ -92,7 +129,9 @@ export const followUser = async (
   return follow
 }
 
-export const unfollowUser = async (id: string): Promise<{
+export const unfollowUser = async (
+  id: string
+): Promise<{
   following: {
     id: string
     username: string
