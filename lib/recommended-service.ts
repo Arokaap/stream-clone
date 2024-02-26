@@ -23,7 +23,7 @@ Array<{
 
   let users = []
 
-  if (userId != null) {
+  if (userId !== null) {
     users = await db.user.findMany({
       where: {
         AND: [
@@ -37,6 +37,15 @@ Array<{
               followedBy: {
                 some: {
                   followerId: userId
+                }
+              }
+            }
+          },
+          {
+            NOT: {
+              blocking: {
+                some: {
+                  blockedId: userId
                 }
               }
             }

@@ -2,7 +2,8 @@ import { db } from '@/lib/db'
 import { getSelf } from '@/lib/auth-service'
 
 export const getFollowedUsers = async (): Promise<
-Array<{
+Array<
+{
   following: {
     id: string
     username: string
@@ -18,14 +19,22 @@ Array<{
   followingId: string
   createdAt: Date
   updateAt: Date
-}>
+}
+>
 > => {
   try {
     const self = await getSelf()
 
     const followedUsers = await db.follow.findMany({
       where: {
-        followerId: self.id
+        followerId: self.id,
+        following: {
+          blocking: {
+            none: {
+              blockedId: self.id
+            }
+          }
+        }
       },
       include: {
         following: true
@@ -46,7 +55,7 @@ export const isFollowingUser = async (id: string): Promise<boolean> => {
       where: { id }
     })
 
-    if (otherUser == null) {
+    if (otherUser === null) {
       throw new Error('User not found')
     }
 
@@ -96,7 +105,7 @@ export const followUser = async (
     where: { id }
   })
 
-  if (otherUser == null) {
+  if (otherUser === null) {
     throw new Error('User not found')
   }
 
@@ -111,7 +120,7 @@ export const followUser = async (
     }
   })
 
-  if (existingFollow != null) {
+  if (existingFollow !== null) {
     throw Error('Already following')
   }
 
@@ -150,7 +159,7 @@ export const unfollowUser = async (
     }
   })
 
-  if (otherUser == null) {
+  if (otherUser === null) {
     throw new Error('User not found')
   }
 
@@ -165,7 +174,7 @@ export const unfollowUser = async (
     }
   })
 
-  if (existingFollow == null) {
+  if (existingFollow === null) {
     throw new Error('Not following')
   }
 
