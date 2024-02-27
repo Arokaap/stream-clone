@@ -7,8 +7,8 @@ export const isBlockedByUser = async (id: string): Promise<boolean> => {
 
     const otherUser = await db.user.findUnique({
       where: {
-        id,
-      },
+        id
+      }
     })
 
     if (otherUser == null) {
@@ -23,9 +23,9 @@ export const isBlockedByUser = async (id: string): Promise<boolean> => {
       where: {
         blockerId_blockedId: {
           blockerId: otherUser.id,
-          blockedId: self.id,
-        },
-      },
+          blockedId: self.id
+        }
+      }
     })
 
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -38,21 +38,21 @@ export const isBlockedByUser = async (id: string): Promise<boolean> => {
 export const blockUser = async (
   id: string
 ): Promise<
-  {
-    blocked: {
-      id: string
-      username: string
-      imageUrl: string
-      externalUserId: string
-      bio: string | null
-      createdAt: Date
-      updateAt: Date
-    }
-  } & {
+{
+  blocked: {
     id: string
-    blockerId: string
-    blockedId: string
+    username: string
+    imageUrl: string
+    externalUserId: string
+    bio: string | null
+    createdAt: Date
+    updateAt: Date
   }
+} & {
+  id: string
+  blockerId: string
+  blockedId: string
+}
 > => {
   const self = await getSelf()
 
@@ -61,7 +61,7 @@ export const blockUser = async (
   }
 
   const otherUser = await db.user.findUnique({
-    where: { id },
+    where: { id }
   })
 
   if (otherUser == null) {
@@ -72,9 +72,9 @@ export const blockUser = async (
     where: {
       blockerId_blockedId: {
         blockerId: self.id,
-        blockedId: otherUser.id,
-      },
-    },
+        blockedId: otherUser.id
+      }
+    }
   })
 
   if (existingBlock !== null) {
@@ -84,11 +84,11 @@ export const blockUser = async (
   const block = await db.block.create({
     data: {
       blockerId: self.id,
-      blockedId: otherUser.id,
+      blockedId: otherUser.id
     },
     include: {
-      blocked: true,
-    },
+      blocked: true
+    }
   })
 
   return block
@@ -97,21 +97,21 @@ export const blockUser = async (
 export const unblockUser = async (
   id: string
 ): Promise<
-  {
-    blocked: {
-      id: string
-      username: string
-      imageUrl: string
-      externalUserId: string
-      bio: string | null
-      createdAt: Date
-      updateAt: Date
-    }
-  } & {
+{
+  blocked: {
     id: string
-    blockerId: string
-    blockedId: string
+    username: string
+    imageUrl: string
+    externalUserId: string
+    bio: string | null
+    createdAt: Date
+    updateAt: Date
   }
+} & {
+  id: string
+  blockerId: string
+  blockedId: string
+}
 > => {
   const self = await getSelf()
 
@@ -121,8 +121,8 @@ export const unblockUser = async (
 
   const otherUser = await db.user.findUnique({
     where: {
-      id,
-    },
+      id
+    }
   })
 
   if (otherUser == null) {
@@ -133,9 +133,9 @@ export const unblockUser = async (
     where: {
       blockerId_blockedId: {
         blockerId: self.id,
-        blockedId: otherUser.id,
-      },
-    },
+        blockedId: otherUser.id
+      }
+    }
   })
 
   if (existingBlock == null) {
@@ -144,11 +144,11 @@ export const unblockUser = async (
 
   const unblock = await db.block.delete({
     where: {
-      id: existingBlock.id,
+      id: existingBlock.id
     },
     include: {
-      blocked: true,
-    },
+      blocked: true
+    }
   })
 
   return unblock

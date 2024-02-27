@@ -59,28 +59,33 @@ export async function POST (req: Request): Promise<Response> {
       data: {
         externalUserId: payload.data.id,
         username: payload.data.username,
-        imageUrl: payload.data.image_url
-      }
+        imageUrl: payload.data.image_url,
+        stream: {
+          create: {
+            name: `${payload.data.username}'s stream`,
+          },
+        },
+      },
     })
   }
 
   if (eventType === 'user.updated') {
     await db.user.update({
       where: {
-        externalUserId: payload.data.id
+        externalUserId: payload.data.id,
       },
       data: {
         username: payload.data.username,
-        imageUrl: payload.data.image_url
-      }
+        imageUrl: payload.data.image_url,
+      },
     })
   }
 
   if (eventType === 'user.deleted') {
     await db.user.delete({
       where: {
-        externalUserId: payload.data.id
-      }
+        externalUserId: payload.data.id,
+      },
     })
   }
 
