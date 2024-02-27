@@ -28,3 +28,33 @@ export const getSelf = async (): Promise<{
 
   return user
 }
+
+export const getSelfByUsername = async (username: string): Promise<{
+  id: string
+  username: string
+  imageUrl: string
+  externalUserId: string
+  bio: string | null
+  createdAt: Date
+  updateAt: Date
+}> => {
+  const self = await currentUser()
+
+  if (!self?.username) {
+    throw new Error('Unauthorized')
+  }
+
+  const user = await db.user.findUnique({
+    where: { username }
+  })
+
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  if (self.username !== user.username) {
+    throw new Error('Unauthorized')
+  }
+
+  return user
+}

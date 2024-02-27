@@ -16,7 +16,7 @@ const UserPage = async ({
 }: UserPageProps): Promise<React.JSX.Element> => {
   const user = await getUserByUsername(params.username)
 
-  if (user === null) {
+  if (user == null) {
     notFound()
   }
 
