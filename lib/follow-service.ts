@@ -39,7 +39,11 @@ Array<
       include: {
         following: {
           include: {
-            stream: true
+            stream: {
+              select: {
+                isLive: true
+              }
+            }
           }
         }
       }
