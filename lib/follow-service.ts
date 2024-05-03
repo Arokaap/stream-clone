@@ -2,25 +2,25 @@ import { db } from '@/lib/db'
 import { getSelf } from '@/lib/auth-service'
 
 export const getFollowedUsers = async (): Promise<
-  Array<
-    {
-      following: {
-        id: string
-        username: string
-        imageUrl: string
-        externalUserId: string
-        bio: string | null
-        createdAt: Date
-        updateAt: Date
-      }
-    } & {
-      id: string
-      followerId: string
-      followingId: string
-      createdAt: Date
-      updateAt: Date
-    }
-  >
+Array<
+{
+  following: {
+    id: string
+    username: string
+    imageUrl: string
+    externalUserId: string
+    bio: string | null
+    createdAt: Date
+    updateAt: Date
+  }
+} & {
+  id: string
+  followerId: string
+  followingId: string
+  createdAt: Date
+  updateAt: Date
+}
+>
 > => {
   try {
     const self = await getSelf()
@@ -31,14 +31,18 @@ export const getFollowedUsers = async (): Promise<
         following: {
           blocking: {
             none: {
-              blockedId: self.id,
-            },
-          },
-        },
+              blockedId: self.id
+            }
+          }
+        }
       },
       include: {
-        following: true,
-      },
+        following: {
+          include: {
+            stream: true
+          }
+        }
+      }
     })
 
     return followedUsers
@@ -52,7 +56,7 @@ export const isFollowingUser = async (id: string): Promise<boolean> => {
     const self = await getSelf()
 
     const otherUser = await db.user.findUnique({
-      where: { id },
+      where: { id }
     })
 
     if (otherUser == null) {
@@ -66,8 +70,8 @@ export const isFollowingUser = async (id: string): Promise<boolean> => {
     const existingFollow = await db.follow.findFirst({
       where: {
         followerId: self.id,
-        followingId: otherUser.id,
-      },
+        followingId: otherUser.id
+      }
     })
 
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -102,7 +106,7 @@ export const followUser = async (
   const self = await getSelf()
 
   const otherUser = await db.user.findUnique({
-    where: { id },
+    where: { id }
   })
 
   if (otherUser == null) {
@@ -116,8 +120,8 @@ export const followUser = async (
   const existingFollow = await db.follow.findFirst({
     where: {
       followerId: self.id,
-      followingId: otherUser.id,
-    },
+      followingId: otherUser.id
+    }
   })
 
   if (existingFollow !== null) {
@@ -127,12 +131,12 @@ export const followUser = async (
   const follow = await db.follow.create({
     data: {
       followerId: self.id,
-      followingId: otherUser.id,
+      followingId: otherUser.id
     },
     include: {
       follower: true,
-      following: true,
-    },
+      following: true
+    }
   })
 
   return follow
@@ -155,8 +159,8 @@ export const unfollowUser = async (
 
   const otherUser = await db.user.findUnique({
     where: {
-      id,
-    },
+      id
+    }
   })
 
   if (otherUser == null) {
@@ -170,8 +174,8 @@ export const unfollowUser = async (
   const existingFollow = await db.follow.findFirst({
     where: {
       followerId: self.id,
-      followingId: otherUser.id,
-    },
+      followingId: otherUser.id
+    }
   })
 
   if (existingFollow == null) {
@@ -180,11 +184,11 @@ export const unfollowUser = async (
 
   const follow = await db.follow.delete({
     where: {
-      id: existingFollow.id,
+      id: existingFollow.id
     },
     include: {
-      following: true,
-    },
+      following: true
+    }
   })
 
   return follow
