@@ -39,7 +39,6 @@ export const UserAvatar = ({
   showBadge,
   size
 }: UserAvatarProps): JSX.Element => {
-  console.log(imageUrl)
   const canShowBadge = showBadge && isLive
   return (
     <div className='relative'>

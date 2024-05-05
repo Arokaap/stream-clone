@@ -1,10 +1,15 @@
 import { db } from '@/lib/db'
 
-export const getUserByUsername = async (username: string): Promise<{
+export const getUserByUsername = async (
+  username: string
+): Promise<{
   id: string
   username: string
   imageUrl: string
   externalUserId: string
+  stream: {
+    isLive: boolean
+  } | null
   bio: string | null
   createdAt: Date
   updateAt: Date
@@ -12,6 +17,20 @@ export const getUserByUsername = async (username: string): Promise<{
   const user = await db.user.findUnique({
     where: {
       username
+    },
+    include: {
+      stream: true
+    }
+  })
+
+  return user
+}
+
+export const getUserById = async (id: string) => {
+  const user = await db.user.findUnique({
+    where: { id },
+    include: {
+      stream: true
     }
   })
 
