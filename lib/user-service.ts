@@ -26,7 +26,18 @@ export const getUserByUsername = async (
   return user
 }
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string): Promise<{
+  id: string
+  username: string
+  imageUrl: string
+  externalUserId: string
+  stream: {
+    isLive: boolean
+  } | null
+  bio: string | null
+  createdAt: Date
+  updateAt: Date
+} | null> => {
   const user = await db.user.findUnique({
     where: { id },
     include: {

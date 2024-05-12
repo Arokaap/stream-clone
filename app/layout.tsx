@@ -22,7 +22,7 @@ export default function RootLayout ({
 }): JSX.Element {
   return (
     <ClerkProvider appearance={{ baseTheme: dark }}>
-      <html lang="es">
+      <html lang="es" suppressHydrationWarning={true}>
           <body className={inter.className}>
             <ThemeProvider
               attribute='class'
