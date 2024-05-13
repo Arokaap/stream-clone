@@ -6,9 +6,10 @@ import { ConnectionState } from 'livekit-client'
 import * as React from 'react'
 import { useState, useMemo, useEffect } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
-import { ChatHeader } from './chat-header'
-import { ChatForm } from './chat-form'
-import ChatList from './chat-list'
+import { ChatHeader, ChatHeaderSkeleton } from './chat-header'
+import { ChatForm, ChatFormSkeleton } from './chat-form'
+import { ChatList, ChatListSkeleton } from './chat-list'
+import ChatCommunity from './chat-community'
 
 interface ChatProps {
   hostName: string
@@ -20,7 +21,7 @@ interface ChatProps {
   isChatFollowersOnly: boolean
 }
 
-const Chat = ({
+export const Chat = ({
   hostName,
   hostIdentity,
   viewerName,
@@ -84,12 +85,22 @@ const Chat = ({
         </>
       )}
       {variant === ChatVariant.COMMUNITY && (
-        <>
-          <p>Community mode</p>
-        </>
+        <ChatCommunity
+          viewerName={viewerName}
+          hostName={hostName}
+          isHidden={isHidden}
+        />
       )}
     </div>
   )
 }
 
-export default Chat
+export const ChatSkeleton = (): JSX.Element => {
+  return (
+    <div className='flex flex-col border-l border-b pt-0 h-[calc(100vh-80px)] border-2'>
+      <ChatHeaderSkeleton />
+      <ChatListSkeleton />
+      <ChatFormSkeleton />
+    </div>
+  )
+}
