@@ -8,8 +8,19 @@ export const getUserByUsername = async (
   imageUrl: string
   externalUserId: string
   stream: {
+    id: string
+    name: string
+    thumbnailUrl: string | null
+    ingressId: string | null
+    serverUrl: string | null
+    streamKey: string | null
     isLive: boolean
-  } | null
+    isChatEnabled: boolean
+    isChatDelayed: boolean
+    isChatFollowersOnly: boolean
+    userId: string
+    createdAt: Date
+    updateAt: Date } | null
   bio: string | null
   createdAt: Date
   updateAt: Date
