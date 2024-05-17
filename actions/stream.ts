@@ -6,7 +6,9 @@ import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
 import { getSelf } from '@/lib/auth-service'
 
-export const updateStream = async (values: Partial<Stream>): Promise<Stream> => {
+export const updateStream = async (
+  values: Partial<Stream>
+): Promise<Stream> => {
   try {
     const self = await getSelf()
     const selfStream = await db.stream.findUnique({
@@ -20,6 +22,7 @@ export const updateStream = async (values: Partial<Stream>): Promise<Stream> => 
     }
 
     const validData = {
+      thumbnailUrl: values.thumbnailUrl,
       name: values.name,
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
