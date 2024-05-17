@@ -20,7 +20,9 @@ export const getUserByUsername = async (
     isChatFollowersOnly: boolean
     userId: string
     createdAt: Date
-    updateAt: Date } | null
+    updateAt: Date
+  } | null
+  _count: { followedBy: number }
   bio: string | null
   createdAt: Date
   updateAt: Date
@@ -30,14 +32,21 @@ export const getUserByUsername = async (
       username
     },
     include: {
-      stream: true
+      stream: true,
+      _count: {
+        select: {
+          followedBy: true
+        }
+      }
     }
   })
 
   return user
 }
 
-export const getUserById = async (id: string): Promise<{
+export const getUserById = async (
+  id: string
+): Promise<{
   id: string
   username: string
   imageUrl: string
