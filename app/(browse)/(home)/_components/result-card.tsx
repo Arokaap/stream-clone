@@ -1,4 +1,3 @@
-import { LiveBadge } from '@/components/live-badge'
 import { Thumbnail, ThumbnailSkeleton } from '@/components/thumbnail'
 import { Skeleton } from '@/components/ui/skeleton'
 import { UserAvatar, UserAvatarSkeleton } from '@/components/user-avatar'
@@ -27,11 +26,6 @@ export const ResultCard = ({
           isLive={data.isLive}
           username={data.user.username}
         />
-        {data.isLive && (
-          <div>
-            <LiveBadge classname='absolute top-2 left-2 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform'/>
-          </div>
-        )}
         <div className='flex gap-x-3'>
           <UserAvatar
             username={data.user.username}

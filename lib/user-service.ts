@@ -2,37 +2,28 @@ import { db } from '@/lib/db'
 
 export const getUserByUsername = async (
   username: string
-): Promise<{
-  id: string
-  username: string
-  imageUrl: string
-  externalUserId: string
-  stream: {
-    id: string
-    name: string
-    thumbnailUrl: string | null
-    ingressId: string | null
-    serverUrl: string | null
-    streamKey: string | null
-    isLive: boolean
-    isChatEnabled: boolean
-    isChatDelayed: boolean
-    isChatFollowersOnly: boolean
-    userId: string
-    createdAt: Date
-    updateAt: Date
-  } | null
-  _count: { followedBy: number }
-  bio: string | null
-  createdAt: Date
-  updateAt: Date
-} | null> => {
+) => {
   const user = await db.user.findUnique({
     where: {
       username
     },
-    include: {
-      stream: true,
+    select: {
+      id: true,
+      externalUserId: true,
+      username: true,
+      bio: true,
+      imageUrl: true,
+      stream: {
+        select: {
+          id: true,
+          isLive: true,
+          isChatDelayed: true,
+          isChatEnabled: true,
+          isChatFollowersOnly: true,
+          thumbnailUrl: true,
+          name: true
+        }
+      },
       _count: {
         select: {
           followedBy: true
