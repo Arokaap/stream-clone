@@ -13,23 +13,7 @@ const roomService = new RoomServiceClient(
 
 export const onBlock = async (
   id: string
-): Promise<
-{
-  blocked: {
-    id: string
-    username: string
-    imageUrl: string
-    externalUserId: string
-    bio: string | null
-    createdAt: Date
-    updateAt: Date
-  }
-} & {
-  id: string
-  blockerId: string
-  blockedId: string
-}
-> => {
+) => {
   const self = await getSelf()
 
   let blockedUser
@@ -70,11 +54,10 @@ export const onUnblock = async (
   blockedId: string
 }
 > => {
+  const self = await getSelf()
   const unblockedUser = await unblockUser(id)
 
-  if (unblockedUser !== null) {
-    revalidatePath(`/${unblockedUser.blocked.username}`)
-  }
+  revalidatePath(`/u/${self.username}/community`)
 
   return unblockedUser
 }
