@@ -20,15 +20,12 @@ export const ourFileRouter = {
       updateAt: Date
     } }> => {
       const self = await getSelf()
-      console.log('User data from getSelf:', self)
       if (!self) {
         throw new Error('User authentication failed.')
       }
       return { user: self }
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log('Upload metadata:', metadata)
-      console.log('Uploaded file info:', file)
       await db.stream.update({
         where: {
           userId: metadata.user.id
