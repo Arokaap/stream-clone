@@ -59,9 +59,16 @@ Array<{
           }
         }
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: [
+        {
+          stream: {
+            isLive: 'desc'
+          }
+        },
+        {
+          createdAt: 'desc'
+        }
+      ]
     })
   } else {
     users = await db.user.findMany({
@@ -72,9 +79,16 @@ Array<{
           }
         }
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: [
+        {
+          stream: {
+            isLive: 'desc'
+          }
+        },
+        {
+          createdAt: 'desc'
+        }
+      ]
     })
   }
 

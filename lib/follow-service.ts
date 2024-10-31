@@ -46,7 +46,19 @@ Array<
             }
           }
         }
-      }
+      },
+      orderBy: [
+        {
+          following: {
+            stream: {
+              isLive: 'desc'
+            }
+          }
+        },
+        {
+          createdAt: 'desc'
+        }
+      ]
     })
 
     return followedUsers
